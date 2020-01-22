@@ -2,10 +2,10 @@
 
 ## Setup:
 
-This project is set up to use a MySQL database. Before running the project, you must create a file named `application.properties` to the directory `/src/main/resources` with the following content to set up your database connection:
+This project is set up to use a MySQL database. Before running the project, you must create a file named `application.yaml` to the directory `/src/main/resources` with the following content to set up your database connection:
 
 ```
-# /src/main/resources/application.properties
+# /src/main/resources/application.yaml
 
 spring:
   datasource:
