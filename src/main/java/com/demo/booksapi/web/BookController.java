@@ -1,5 +1,6 @@
 package com.demo.booksapi.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.booksapi.domain.Book;
@@ -19,6 +21,21 @@ public class BookController {
 
 	@Autowired
 	private BookRepository bookRepository;
+	
+	/*
+	 * SIMPLE SEARCH (MATCH ANY ATTRIBUTE)
+	 */
+	@RequestMapping(value="/api/search")
+	public List<Book> simpleSearch(@RequestParam String term) {
+		List<Book> response = new ArrayList<>();
+		for (Book b : bookRepository.findAll()) {
+			if (b.matchesSimpleSearch(term)) {
+				response.add(b);
+			}
+		}
+		return response;
+	}
+	
 	
 	/*
 	 * GET ALL

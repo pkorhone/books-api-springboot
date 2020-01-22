@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @Data
@@ -66,4 +67,17 @@ public class Book {
 		}
 		this.categories.add(category);
 	}
+	
+	public boolean matchesSimpleSearch(String searchTerm) {
+		if (this.toString().toLowerCase().contains(searchTerm.toLowerCase())) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return this.title + ", " + this.author + ", " + this.description + ", " + this.ISBN;
+	}
+
 }
