@@ -1,8 +1,5 @@
 package com.demo.booksapi;
 
-import java.awt.List;
-import java.util.ArrayList;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +11,8 @@ import com.demo.booksapi.domain.Book;
 import com.demo.booksapi.domain.BookRepository;
 import com.demo.booksapi.domain.Category;
 import com.demo.booksapi.domain.CategoryRepository;
+import com.demo.booksapi.domain.Publisher;
+import com.demo.booksapi.domain.PublisherRepository;
 
 @SpringBootApplication
 public class BooksApiApplication {
@@ -33,7 +32,8 @@ public class BooksApiApplication {
 	public CommandLineRunner clRunner(
 			BookRepository bookRepository, 
 			AuthorRepository authorRepository, 
-			CategoryRepository categoryRepository) {
+			CategoryRepository categoryRepository,
+			PublisherRepository publisherRepository) {
 		return (args) -> {
 			
 			// save some categories
@@ -68,6 +68,16 @@ public class BooksApiApplication {
 			auth3.setName("Mikki Hiiri");
 			authorRepository.save(auth3);
 			
+			// save some publishers
+			
+			Publisher pub1 = new Publisher();
+			pub1.setName("Otava");
+			publisherRepository.save(pub1);
+			
+			Publisher pub2 = new Publisher();
+			pub2.setName("WSOY");
+			publisherRepository.save(pub2);
+			
 			// save some books
 			
 			Book book1 = new Book();
@@ -76,10 +86,13 @@ public class BooksApiApplication {
 			book1.setDescription("Opi englantia akun ja mikin kanssa");
 			book1.addCategory(cat1);
 			book1.addCategory(cat2);
+			book1.setPublisher(pub1);
 			
 			bookRepository.save(book1);
 			auth1.addBook(book1);
 			authorRepository.save(auth1);
+			pub1.addBook(book1);
+			publisherRepository.save(pub1);
 			
 			Book book2 = new Book();
 			book2.setTitle("Another long book");
@@ -87,9 +100,13 @@ public class BooksApiApplication {
 			book2.setDescription("elämä on laiffii");
 			book2.addCategory(cat3);
 			book2.addCategory(cat4);
+			book2.setPublisher(pub2);
+			
 			bookRepository.save(book2);
 			auth2.addBook(book2);
 			authorRepository.save(auth2);
+			pub2.addBook(book2);
+			publisherRepository.save(pub2);
 			
 			Book book3 = new Book();
 			book3.setTitle("This is a third book");
@@ -97,9 +114,13 @@ public class BooksApiApplication {
 			book3.setDescription("super electric adventure");
 			book3.addCategory(cat1);
 			book3.addCategory(cat3);
+			book3.setPublisher(pub2);
+			
 			bookRepository.save(book3);
 			auth3.addBook(book3);
 			authorRepository.save(auth3);
+			pub2.addBook(book3);
+			publisherRepository.save(pub2);
 		};
 	}
 	

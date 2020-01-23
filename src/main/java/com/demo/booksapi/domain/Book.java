@@ -10,12 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
+@JsonPropertyOrder({
+	"id",
+	"title",
+	"author",
+	"description",
+	"categories",
+	"publisher",
+	"publishedYear", 
+	"imageLink"
+})
 public class Book {
 	
 	@Id
@@ -38,7 +50,17 @@ public class Book {
 	@JoinColumn(name = "authorId")
 	private Author author;
 	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "publisherId")
+	private Publisher publisher;
+	
+	private int publishedYear;
+	
+	@Lob
 	private String description;
+	
+	private String imageLink;
 
 	@JsonIgnore
 	@ManyToMany
@@ -49,9 +71,9 @@ public class Book {
 	private List<Category> categories;
 	
 	/*
-	 * For better readability of JSON response, 'author' and  'categories' attributes 
+	 * For better readability of JSON response, 'author', 'publisher' and 'categories' attributes 
 	 * above are JsonIgnored (they will not be included in JSON).
-	 * instead, author is represented only by author name (String) and 
+	 * instead, author and publisher are represented only by their names (String) and 
 	 * categories are mapped as an array of string objects below:
 	 */
 	
@@ -59,6 +81,12 @@ public class Book {
 	@JsonProperty("author")
 	private String authorName() {
 		return this.author.getName();
+	}
+	
+	@Transient
+	@JsonProperty("publisher")
+	private String publisherName() {
+		return this.publisher.getName();
 	}
 	
 	@Transient
