@@ -18,6 +18,16 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
+
+      # NOTE: if connecting to a new database instance, you can set ddl-auto: create
+      # This will connect to your database at runtime and:
+      # 1) drop all existing tables 
+      # 2) create all tables and relations based on the hibernate entity classes
+      # After running once, you can then set ddl-auto: validate 
+      # (validate will check if existing tables correspond to hibernate schema, but will not make changes to the database.)
 ```
 
+### Database schema:
+
+![](https://github.com/pkorhone/books-api-springboot/blob/master/db_schema.png)
