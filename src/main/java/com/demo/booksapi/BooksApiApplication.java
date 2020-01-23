@@ -1,10 +1,15 @@
 package com.demo.booksapi;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.demo.booksapi.domain.Author;
+import com.demo.booksapi.domain.AuthorRepository;
 import com.demo.booksapi.domain.Book;
 import com.demo.booksapi.domain.BookRepository;
 import com.demo.booksapi.domain.Category;
@@ -23,8 +28,12 @@ public class BooksApiApplication {
 	/*
 	 * Command line runner for testing purposes
 	 */
+	
 	@Bean
-	public CommandLineRunner clRunner(BookRepository bookRepository, CategoryRepository categoryRepository) {
+	public CommandLineRunner clRunner(
+			BookRepository bookRepository, 
+			AuthorRepository authorRepository, 
+			CategoryRepository categoryRepository) {
 		return (args) -> {
 			
 			// save some categories
@@ -45,36 +54,54 @@ public class BooksApiApplication {
 			cat4.setName("Romance");
 			categoryRepository.save(cat4);
 			
+			// save some authors
+			
+			Author auth1 = new Author();
+			auth1.setName("Aku Ankka");
+			authorRepository.save(auth1);
+			
+			Author auth2 = new Author();
+			auth2.setName("Hannu Hanhi");
+			authorRepository.save(auth2);
+			
+			Author auth3 = new Author();
+			auth3.setName("Mikki Hiiri");
+			authorRepository.save(auth3);
+			
 			// save some books
 			
 			Book book1 = new Book();
 			book1.setTitle("book One in series");
-			book1.setAuthor("Aku Ankka");
+			book1.setAuthor(auth1);
 			book1.setDescription("Opi englantia akun ja mikin kanssa");
-			book1.setISBN("1236547896");
 			book1.addCategory(cat1);
 			book1.addCategory(cat2);
+			
 			bookRepository.save(book1);
+			auth1.addBook(book1);
+			authorRepository.save(auth1);
 			
 			Book book2 = new Book();
 			book2.setTitle("Another long book");
-			book2.setAuthor("Hannu Hanhi");
+			book2.setAuthor(auth2);
 			book2.setDescription("elämä on laiffii");
-			book2.setISBN("987654321");
 			book2.addCategory(cat3);
 			book2.addCategory(cat4);
 			bookRepository.save(book2);
+			auth2.addBook(book2);
+			authorRepository.save(auth2);
 			
 			Book book3 = new Book();
 			book3.setTitle("This is a third book");
-			book3.setAuthor("Mikki Hiiri");
+			book3.setAuthor(auth3);
 			book3.setDescription("super electric adventure");
-			book3.setISBN("456987321");
 			book3.addCategory(cat1);
 			book3.addCategory(cat3);
 			bookRepository.save(book3);
-			
+			auth3.addBook(book3);
+			authorRepository.save(auth3);
 		};
 	}
+	
 
 }

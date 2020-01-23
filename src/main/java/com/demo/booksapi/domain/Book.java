@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @NoArgsConstructor
 @Data
@@ -33,9 +33,12 @@ public class Book {
 	@Column(nullable=false)
 	private String title;
 	
-	private String author;
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "authorId")
+	private Author author;
+	
 	private String description;
-	private String ISBN;
 
 	@JsonIgnore
 	@ManyToMany
@@ -46,10 +49,17 @@ public class Book {
 	private List<Category> categories;
 	
 	/*
-	 * For better readability of JSON response, 'categories' attribute above is JsonIgnored
-	 * (it will not be included in JSON). 
-	 * instead, categories are mapped as an array of string objects below:
+	 * For better readability of JSON response, 'author' and  'categories' attributes 
+	 * above are JsonIgnored (they will not be included in JSON).
+	 * instead, author is represented only by author name (String) and 
+	 * categories are mapped as an array of string objects below:
 	 */
+	
+	@Transient
+	@JsonProperty("author")
+	private String authorName() {
+		return this.author.getName();
+	}
 	
 	@Transient
 	@JsonProperty("categories")
@@ -77,7 +87,7 @@ public class Book {
 	
 	@Override
 	public String toString() {
-		return this.title + ", " + this.author + ", " + this.description + ", " + this.ISBN;
+		return this.title + ", " + this.author + ", " + this.description;
 	}
 
 }
