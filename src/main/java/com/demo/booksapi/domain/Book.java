@@ -115,7 +115,7 @@ public class Book {
 	
 	@Override
 	public String toString() {
-		return this.title + ", " + this.author + ", " + this.description;
+		return this.title + ", " + this.author.getName() + ", " + this.description;
 	}
 
 }

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Author {
 	@Column(nullable=false)
 	private String name;
 	
+	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="author")
 	private List<Book> books;
 	
