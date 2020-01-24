@@ -2,6 +2,7 @@ package com.demo.booksapi.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.booksapi.domain.Author;
 import com.demo.booksapi.domain.Book;
 import com.demo.booksapi.domain.BookRepository;
 
@@ -25,7 +27,7 @@ public class BookController {
 	/*
 	 * SIMPLE SEARCH (MATCH ANY ATTRIBUTE)
 	 */
-	@RequestMapping(value="/api/search")
+	@RequestMapping(value="/api/search", method=RequestMethod.GET)
 	public List<Book> simpleSearch(@RequestParam String term) {
 		List<Book> response = new ArrayList<>();
 		for (Book b : bookRepository.findAll()) {
@@ -35,6 +37,55 @@ public class BookController {
 		}
 		return response;
 	}
+	
+	/*
+	 * ADVANCED SEARCH (MATCH ALL SPECIFIED ATTRIBUTES)
+	 */
+	@RequestMapping(value="/api/detailedsearch", method=RequestMethod.GET)
+	public List<Book> advancedSearch(
+			@RequestParam Optional<String> author,
+			@RequestParam Optional<String> title,
+			@RequestParam Optional<String> description,
+			@RequestParam Optional<String> publisher,
+			@RequestParam Optional<Integer> year) {
+		List<Book> response = new ArrayList<>();
+		for (Book b : bookRepository.findAll()) {
+			if (compareStr(b.getAuthor().getName(), author) &&
+			compareStr(b.getTitle(), title) &&
+			compareStr(b.getDescription(), description) &&
+			compareStr(b.getPublisher().getName(), publisher) &&
+			compareInt(b.getPublishedYear(), year) ) {
+					
+				response.add(b);
+			}
+		}
+		return response;
+	}
+	
+	/*
+	 * helper methods to compare advanced search parameters and book attributes. 
+	 * Returns true if parameter is not present.
+	 */
+	private boolean compareStr(String attribute, Optional<String> searchTerm) {
+		if (!searchTerm.isPresent()) {
+			return true;
+		}
+		if (attribute.toLowerCase().contains(searchTerm.get().toLowerCase())) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean compareInt(int attribute, Optional<Integer> searchTerm) {
+		if (!searchTerm.isPresent()) {
+			return true;
+		}
+		if (attribute == searchTerm.get()) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 	
 	/*
@@ -82,4 +133,5 @@ public class BookController {
 		bookRepository.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
 }
