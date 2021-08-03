@@ -4,12 +4,12 @@ This project was created as a back end for the [Book Search React App](https://g
 
 ## API Endpoints used by front end:
 
-| Use case | Method | Endpoint | Details | Live examples |
-| --- | --- | --- | --- | --- |
-| fetch all books from database | GET | `/api/books` | | https://quiet-spire-31652.herokuapp.com/api/books |
-| single book by id | GET | `/api/books/{id}` | | https://quiet-spire-31652.herokuapp.com/api/books/8 |
-| search for books matching a search term in any attribute | GET | `/api/search?term={searchTerm}` | | https://quiet-spire-31652.herokuapp.com/api/search?term=emperor |
-|search for books matching specific details | GET | `/api/detailedsearch?{parameters}` | The available parameters are as follows: <br> - author <br> - title <br> - description <br> - publisher <br> - year <br> Requests may include all, some or none of these parameters in any order. | https://quiet-spire-31652.herokuapp.com/api/detailedsearch?description=economics&title=shape <br><br> https://quiet-spire-31652.herokuapp.com/api/detailedsearch?year=2019&publisher=penguin
+| Use case | Method | Endpoint | Details |
+| --- | --- | --- | --- |
+| fetch all books from database | GET | `/api/books` | |
+| single book by id | GET | `/api/books/{id}` | |
+| search for books matching a search term in any attribute | GET | `/api/search?term={searchTerm}` | |
+|search for books matching specific details | GET | `/api/detailedsearch?{parameters}` | The available parameters are as follows: <br> - author <br> - title <br> - description <br> - publisher <br> - year <br> Requests may include all, some or none of these parameters in any order. |
 
 ## Setup:
 
